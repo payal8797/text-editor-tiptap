@@ -1,6 +1,5 @@
 "use client";
 import '../../styles/editor.css'; 
-import { MenuBar } from "./MenuBar";
 import { Color } from '@tiptap/extension-color';
 import FontFamily from '@tiptap/extension-font-family';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
@@ -17,9 +16,21 @@ import TableHeader from '@tiptap/extension-table-header';
 import Underline from '@tiptap/extension-underline';
 import { useEditor, BubbleMenu, EditorContent, FloatingMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import React from 'react';
-const Editor = () => {
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { MenuBar } from "./MenuBar";
+import BulletList from '@tiptap/extension-bullet-list';
+import OrderedList from '@tiptap/extension-ordered-list';
+import ListItem from '@tiptap/extension-list-item';
 
+interface EditorProps {
+  description: string;
+}
+
+const Editor = (props: EditorProps) => {
+  const { description } = props;
+  const [editorContent, setEditorContent] = useState(description);
+ 
   const extensions = [
     Color,
     FontFamily,
@@ -28,6 +39,9 @@ const Editor = () => {
     HorizontalRule,
     TaskList,
     Table,
+    BulletList,
+    OrderedList,
+    ListItem,
     TableCell,
     TableHeader,
     TableRow,
@@ -57,11 +71,20 @@ const Editor = () => {
     }),
   ];
 
-    const editor = useEditor({
-        extensions: extensions,
-        content: "",
-      });
+  const editor = useEditor({
+    extensions: extensions,
+    content: description,
+    onUpdate: ({ editor }) => {
+      setEditorContent(editor.getHTML());
+    },
+  });
 
+  useEffect(() => {
+    if (editor && editorContent !== editor.getHTML()) {
+      editor.commands.setContent(editorContent);
+    }
+  }, [editorContent, editor]);
+      
   return (
     <div>
       {editor && (

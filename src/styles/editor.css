@@ -143,12 +143,14 @@ ul[data-type="taskList"] {
   border: transparent;
   background-color: transparent;
   cursor: pointer;
+  padding: 4px 8px !important;
 }
 
 .button-css-disabled{
   border: transparent;
   background-color: transparent;
   cursor:no-drop;
+  padding: 4px 8px !important;
 }
 
 .is-active{
@@ -165,7 +167,7 @@ ul[data-type="taskList"] {
 
 .bubble-menu {
   height: 36px;
-  width: 600px;
+  width: 550px;
   gap: 0px !important;
   display: flex;
   flex-direction: row;
